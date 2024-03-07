@@ -3,7 +3,7 @@
 
 <br/>
 
-## 📌 Frontend Skills
+## 📌 Backend Skills
 ### Language
 <a><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/></a>
 
@@ -16,7 +16,7 @@
 
 <br/>
 
-## 📌 Backend Flow
+## 📌 Backend Descriptions
 ### `Route`
 > ✏️ 플라스크에서 라우트를 설정하는 부분입니다.
 > 1. get_uploaded_data : 프론트에서 엑셀을 업로드하면 해당 라우터로 보내집니다. 받은 데이터를 토대로 전역변수에 담아 저장합니다.
@@ -62,8 +62,7 @@ if __name__ == "__main__":
 
 ### `Data Analysis`
 > ✏️ groupby, 빈도분석 등 기초적인 데이터를 분석하는 곳입니다.
-> 1. get_uploaded_data : 프론트에서 엑셀을 업로드하면 해당 라우터로 보내집니다. 받은 데이터를 토대로 전역변수에 담아 저장합니다.
-> 2. get_analysis_list : 업로드 된 파일을 토대로 데이터 분석을 진행한 후, 분석 데이터를 리턴합니다.
+> 기본적인 전처리 작업 이후에 데이터를 분석하여 분석된 데이터를 리턴합니다.
 
 ```python
 def getTotalAnalyizeList(uploadedFile):
@@ -115,43 +114,15 @@ if __name__ == "__main__":
   temp_data.Month.replace([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                           ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                           inplace=True)
-  
-  monthlyDF = temp_data[['OrderDemand', 'Month', 'Year', ]] \
-      .groupby(["Year", "Month"]) \
-      .sum().reset_index().sort_values(by=['Year', 'Month'], ascending=False)
-  
-  monthlyJSON = {
-      "Year": monthlyDF['Year'].tolist(),
-      "Month": monthlyDF['Month'].tolist(),
-      "OrderDemand": monthlyDF['OrderDemand'].tolist()
-  }
-  
+  ...
+
   # [ProductCategory] statistical information about OrderDemand
   productCategoryJSON = {
       "index": data["ProductCategory"].value_counts().index.tolist(),
       "count": pd.Series.tolist(data["ProductCategory"].value_counts())
   }
-  
-  # [Warehouse] Number of samples according to Warehouse
-  warehouseJSON = {
-      "index": data['Warehouse'].value_counts().index.tolist(),
-      "count": pd.Series.tolist(data["Warehouse"].value_counts())
-  }
-  
-  # [ProductCode] Based Analysis
-  productCodeJSON = {
-      "index": data['ProductCode'].value_counts().index.tolist(),
-      "count": pd.Series.tolist(data["ProductCode"].value_counts())
-  }
-  
-  # [Yearly] Analysis
-  analysisDf = data[['OrderDemand', 'Year']].groupby(["Year"]).sum().reset_index().sort_values(by='Year',
-                                                                                               ascending=False)
-  yearlyJSON = {
-      "index": analysisDf['Year'].tolist(),
-      "count": analysisDf['OrderDemand'].tolist()
-  }
-  
+  ...
+
   # Warehouse Based Analysis
   warehouseBasedDF = data[["OrderDemand", 'Year', 'Warehouse']] \
       .groupby(["Year", "Warehouse"]) \
@@ -162,30 +133,8 @@ if __name__ == "__main__":
       "Warehouse": warehouseBasedDF['Warehouse'].tolist(),
       "OrderDemand": warehouseBasedDF['OrderDemand'].tolist()
   }
-  
-  # Product Category Based Analysis
-  productCategoryBasedDF = data[["OrderDemand", 'ProductCategory', 'Warehouse']] \
-      .groupby(["ProductCategory", "Warehouse"]) \
-      .sum().reset_index().sort_values(by=['OrderDemand'], ascending=False)
-  
-  productCategoryBasedJSON = {
-      "ProductCategory": productCategoryBasedDF['ProductCategory'].tolist(),
-      "Warehouse": productCategoryBasedDF['Warehouse'].tolist(),
-      "OrderDemand": productCategoryBasedDF['OrderDemand'].tolist()
-  }
-  
-  # ProductCode Based Analysis
-  productCodeBasedDF = data[["OrderDemand", 'Warehouse', 'ProductCode', 'ProductCategory']] \
-      .groupby(["ProductCode", "Warehouse", "ProductCategory"]) \
-      .sum().reset_index().sort_values(by=['OrderDemand'], ascending=False)
-  
-  productCodeBaseJSON = {
-      "ProductCode": productCodeBasedDF['ProductCode'].tolist(),
-      "ProductCategory": productCodeBasedDF['ProductCategory'].tolist(),
-      "Warehouse": productCodeBasedDF['Warehouse'].tolist(),
-      "OrderDemand": productCodeBasedDF['OrderDemand'].tolist()
-  }
-  
+  ...
+
   # Total List Return
   totalList = {
       "productCategoryJSON": productCategoryJSON,
@@ -199,6 +148,13 @@ if __name__ == "__main__":
   }
   return totalList
 ```
+
+---
+
+### `Stock Prediction`
+> ✏️ 프론트에서 사용자가 보내준 데이터를 바탕으로 LSTM으로 적정 재고량을 예측합니다.
+> 
+
 --- 
 
 [↑ 전체코드보기](https://github.com/bbak0105/AI_Project_Front/blob/main/src/views/dashboard/FileUploadBox.js)
