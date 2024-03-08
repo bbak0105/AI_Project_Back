@@ -1,4 +1,4 @@
-# LSTM을 활용한 재고 관리 웹 사이트 (백엔드)
+# LSTM을 활용한 재고 관리 웹 사이트 제작 (백엔드)
 ![DataNomads](https://github.com/bbak0105/AI_Project_Front/assets/66405572/1d1423ee-e0a9-4a93-8072-aee69b1b261b)
 
 <br/>
